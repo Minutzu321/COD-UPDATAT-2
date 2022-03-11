@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -19,14 +20,19 @@ public class SHardware {
     public static DcMotor lift;
     public static DcMotor matura_exterior, matura_interior;
 
-    public static Servo cutie;
+    public static Servo team;
+    public static CRServo cutie;
     public static DcMotor carusel;
 
     public static BNO055IMU imu;
 
     public static Servo par,perp;
 
+    public static NormalizedColorSensor colorSensor;
+
     public static Telemetry telemetry;
+
+    public static double parJos=0.82, perpJos=0.39, parSus=0.335, perpSus=0.64;
 
     public static void init(OpMode opMode){
         //GIROSCOP
@@ -55,15 +61,18 @@ public class SHardware {
 
         lift = (DcMotor) opMode.hardwareMap.get("lift");
 
-        matura_exterior = (DcMotor) opMode.hardwareMap.get("matura_exterior");
-        matura_interior = (DcMotor) opMode.hardwareMap.get("matura_interior");
+        matura_exterior = (DcMotor) opMode.hardwareMap.get("mext");
+        matura_interior = (DcMotor) opMode.hardwareMap.get("mint");
 
-        cutie = (Servo) opMode.hardwareMap.get("cutie");
+        cutie = (CRServo) opMode.hardwareMap.get("cutie");
+        team = (Servo) opMode.hardwareMap.get("team");
 
         carusel = (DcMotor) opMode.hardwareMap.get("carusel");
 
-        par = (Servo) opMode.hardwareMap.get("pars");
-        perp = (Servo) opMode.hardwareMap.get("perps");
+        par = (Servo) opMode.hardwareMap.get("pars"); //0
+        perp = (Servo) opMode.hardwareMap.get("perps"); //1
+
+        colorSensor = (NormalizedColorSensor) opMode.hardwareMap.get("culoare");
 
 
         telemetry = opMode.telemetry;

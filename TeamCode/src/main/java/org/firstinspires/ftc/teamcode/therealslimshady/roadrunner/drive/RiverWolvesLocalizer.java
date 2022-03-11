@@ -33,7 +33,7 @@ import java.util.List;
  */
 public class RiverWolvesLocalizer extends TwoTrackingWheelLocalizer {
     public static double TICKS_PER_REV = 8192;
-    public static double WHEEL_RADIUS = 1; // in
+    public static double WHEEL_RADIUS = 1.8110236; // in
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (encoder) speed
 
     public static double PARALLEL_X = -1.96850394; // X is the up and down direction
@@ -42,7 +42,7 @@ public class RiverWolvesLocalizer extends TwoTrackingWheelLocalizer {
     public static double PERPENDICULAR_X = 1.18110236;
     public static double PERPENDICULAR_Y = -2.75590551;
 
-    public static double MULTI_X = 1.093493521102534;
+    public static double MULTI_X = 1;
     public static double MULTI_Y = 1;
 
     // Parallel/Perpendicular to the forward axis

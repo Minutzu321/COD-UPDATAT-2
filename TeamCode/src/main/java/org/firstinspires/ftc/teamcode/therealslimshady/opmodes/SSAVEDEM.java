@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.therealslimshady.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.therealslimshady.SConnection;
@@ -27,19 +28,34 @@ public class SSAVEDEM extends LinearOpMode {
         //care este "this", adica clasa asta, intrucat extinde OpMode!!
         SHardware.init(this);
 
-        IASAVEDEM.init();
         //Initializam si vuforia pentru ca suntem la autonomie si ne ajuta
-        SVuforia.init(this);
+//        SVuforia.init(this);
 
         //asteptam pana se apasa butonul de start!
         waitForStart();
 
+
+        SHardware.cutie.setPower(0.4);
+        ElapsedTime et = new ElapsedTime();
+        while (et.seconds() < 0.4) {};
+        SHardware.cutie.setPower(0);
+        while (et.seconds() < 0.2) {};
+        float r=0,g=0,b=0;
+        while (r <= (r+g+b)/3){
+            SHardware.cutie.setPower(-0.15);
+
+            r = SHardware.colorSensor.getNormalizedColors().red;
+            g = SHardware.colorSensor.getNormalizedColors().green;
+            b = SHardware.colorSensor.getNormalizedColors().blue;
+        }
+        SHardware.cutie.setPower(0);
+
         //In loc de functia loop vom avea un while care se opreste cand apasam pe butonul de stop
         while(!isStopRequested()){
-            SVuforia.loop(this);
+//            SVuforia.loop(this);
 //            telemetry.addData("dist",SHardware.distanta.getDistance(DistanceUnit.MM));
 
-            IASAVEDEM.loop(this);
+//            IASAVEDEM.loop(this);
 //            SCreier.mergi(7650);
             SMiscariRoti.loop(this);
 

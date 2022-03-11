@@ -20,7 +20,6 @@ public class SCreier {
     private static int poz = 0;
 
     public static void init(){
-        SHardware.cutie.setPosition(1);
         SMiscariRoti.setVelXYR(0,0,0);
     }
 
@@ -89,7 +88,6 @@ public class SCreier {
             float dist = SMiscariRoti.mergiSpreTarget(69.5f, 12.5f);
             opMode.telemetry.addData("distanta",dist);
             if(dist>-5) {
-                SHardware.cutie.setPosition(0.45);
                 SMiscariRoti.setVelXYR(0, 0, 0);
                 FAZA = 4;
             }
@@ -152,9 +150,9 @@ public class SCreier {
 //            }
         }
         if(FAZA==6){
-            SHardware.cutie.setPosition(0.27);
+//            SHardware.cutie.setPosition(0.27);
             if(et.seconds()>1) {
-                SHardware.cutie.setPosition(0.45);
+//                SHardware.cutie.setPosition(0.45);
                 poz=0;
                 FAZA = 7;
                 et.reset();
@@ -174,7 +172,7 @@ public class SCreier {
         if(FAZA==8){
             if(SMiscariRoti.indreaptSpre(0.4, 0, AngleUnit.DEGREES)){
                 SMiscariRoti.setVelXYR(0,0,0);
-                SHardware.cutie.setPosition(1);
+//                SHardware.cutie.setPosition(1);
                 FAZA=9;
                 et.reset();
             }

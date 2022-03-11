@@ -50,7 +50,7 @@ import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
  * is explained below.
  */
 @TeleOp(name = "Concept: TensorFlow Object Detection Webcam", group = "Concept")
-@Disabled
+//@Disabled
 public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
   /* Note: This sample uses the all-objects Tensor Flow model (FreightFrenzy_BCDM.tflite), which contains
    * the following 4 detectable objects
@@ -63,12 +63,9 @@ public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
    *  FreightFrenzy_BC.tflite  0: Ball,  1: Cube
    *  FreightFrenzy_DM.tflite  0: Duck,  1: Marker
    */
-    private static final String TFOD_MODEL_ASSET = "FreightFrenzy_BCDM.tflite";
+    private static final String TFOD_MODEL_ASSET = "RiverWolves.tflite";
     private static final String[] LABELS = {
-      "Ball",
-      "Cube",
-      "Duck",
-      "Marker"
+      "Pahar",
     };
 
     /*
@@ -83,8 +80,8 @@ public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
      * Once you've obtained a license key, copy the string from the Vuforia web site
      * and paste it in to your code on the next line, between the double quotes.
      */
-    private static final String VUFORIA_KEY =
-            " -- YOUR NEW VUFORIA KEY GOES HERE  --- ";
+    private static final String VUFORIA_KEY ="AfNM7lD/////AAABmWC9oSAkbk+RiPHZnJIoSCEnkeEQcO95qSHOsX7sNV52AfvXc4J1dqXGF+QYKG52nTQNx3w3lwZ1ywLLdVxTr6oaRKh9Yo795IWDbgDrOOrtjKkPflJZWRWwrt97cvsZVDSSG3P+Vx3Pa3YqsE73CveiZHTR2Gp0tzzhXZnlGGEpUfPlkFg0VjW16H/aRJ5lyvskFIiosXWPSHJevHf7GIdXQSwB5ekSM9uYfE1BNDrMnKeNRbgKJO9r0FUbgRlu0emAVmNsYI5icXiDm+fLNyYl7EMz7uQBEmkzsy6O3wFx3NuG3mRP/pRZLIVNbGP1+SwNJIHt4vehFsDsut7+vgDgiaOacqFct4Bi9q2zfeoR ";
+
 
     /**
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
@@ -118,7 +115,7 @@ public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
             // to artificially zoom in to the center of image.  For best results, the "aspectRatio" argument
             // should be set to the value of the images used to create the TensorFlow Object Detection model
             // (typically 16/9).
-            tfod.setZoom(2.5, 16.0/9.0);
+//            tfod.setZoom(2.5, 16.0/9.0);
         }
 
         /** Wait for the game to begin */

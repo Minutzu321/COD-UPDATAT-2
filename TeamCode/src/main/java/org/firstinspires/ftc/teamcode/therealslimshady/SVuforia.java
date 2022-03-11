@@ -49,12 +49,9 @@ public class SVuforia {
     public static TFObjectDetector tfod;
 
 
-    private static final String TFOD_MODEL_ASSET = "FreightFrenzy_BCDM.tflite";
+    private static final String TFOD_MODEL_ASSET = "/sdcard/FIRST/tflitemodels/RiverWolves.tflite";
     public static final String[] LABELS = {
-            "Ball",
-            "Cube",
-            "Duck",
-            "Marker"
+            "Pahar",
     };
 
 

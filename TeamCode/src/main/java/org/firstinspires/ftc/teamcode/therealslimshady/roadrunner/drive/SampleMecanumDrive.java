@@ -123,8 +123,8 @@ public class SampleMecanumDrive extends MecanumDrive {
         par = (Servo) hardwareMap.get("pars");
         perp = (Servo) hardwareMap.get("perps");
 
-        par.setPosition(0);
-        perp.setPosition(0.8);
+        par.setPosition(SHardware.parJos);
+        perp.setPosition(SHardware.perpJos);
 
         leftFront = hardwareMap.get(DcMotorEx.class, "sf");
         leftRear = hardwareMap.get(DcMotorEx.class, "ss");
