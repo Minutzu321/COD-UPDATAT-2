@@ -64,7 +64,7 @@ public class SCreier {
             }
         }
         if(FAZA==1){
-            SVuforia.switchableCamera.setActiveCamera(SVuforia.webcam2);
+//            SVuforia.switchableCamera.setActiveCamera(SVuforia.webcam2);
             SVuforia.tfod.deactivate();
             SVuforia.tfod.shutdown();
 
@@ -72,20 +72,20 @@ public class SCreier {
             FAZA=2;
         }
         if(FAZA==2){
-            SMiscariRoti.indreaptSpre(0.5, 0, AngleUnit.DEGREES);
+//            SMiscariRoti.indreaptSpre(0.5, 0, AngleUnit.DEGREES);
             if(et.seconds() < 1.3) {
                 SMiscariRoti.setVelPolar(0.5f, 0, AngleUnit.DEGREES);
             }else {
                 SMiscariRoti.setVelPolar(0.2f, 0, AngleUnit.DEGREES);
             }
 
-            if(SVuforia.targetVisible) {
-                SMiscariRoti.setVelXYR(0, 0, 0);
-                FAZA = 3;
-            }
+//            if(SVuforia.targetVisible) {
+//                SMiscariRoti.setVelXYR(0, 0, 0);
+//                FAZA = 3;
+//            }
         }
         if(FAZA==3){
-            float dist = SMiscariRoti.mergiSpreTarget(69.5f, 12.5f);
+            float dist = 0;
             opMode.telemetry.addData("distanta",dist);
             if(dist>-5) {
                 SMiscariRoti.setVelXYR(0, 0, 0);
@@ -94,20 +94,20 @@ public class SCreier {
         }
         if(FAZA==4){
             if(poz==3){
-                if (SMiscariRoti.indreaptSpre(0.5, 42, AngleUnit.DEGREES)) {
-                    FAZA = 5;
-                    et.reset();
-                }
+//                if (SMiscariRoti.indreaptSpre(0.5, 42, AngleUnit.DEGREES)) {
+//                    FAZA = 5;
+//                    et.reset();
+//                }
             }else if(poz==2){
-                if (SMiscariRoti.indreaptSpre(0.5, 40, AngleUnit.DEGREES)) {
-                    FAZA = 5;
-                    et.reset();
-                }
+//                if (SMiscariRoti.indreaptSpre(0.5, 40, AngleUnit.DEGREES)) {
+//                    FAZA = 5;
+//                    et.reset();
+//                }
             }else {
-                if (SMiscariRoti.indreaptSpre(0.5, 40, AngleUnit.DEGREES)) {
-                    FAZA = 5;
-                    et.reset();
-                }
+//                if (SMiscariRoti.indreaptSpre(0.5, 40, AngleUnit.DEGREES)) {
+//                    FAZA = 5;
+//                    et.reset();
+//                }
             }
         }
         if(FAZA==5) {
@@ -170,22 +170,22 @@ public class SCreier {
         }
 
         if(FAZA==8){
-            if(SMiscariRoti.indreaptSpre(0.4, 0, AngleUnit.DEGREES)){
-                SMiscariRoti.setVelXYR(0,0,0);
-//                SHardware.cutie.setPosition(1);
-                FAZA=9;
-                et.reset();
-            }
+//            if(SMiscariRoti.indreaptSpre(0.4, 0, AngleUnit.DEGREES)){
+//                SMiscariRoti.setVelXYR(0,0,0);
+////                SHardware.cutie.setPosition(1);
+//                FAZA=9;
+//                et.reset();
+//            }
 
         }
 
         if(FAZA==9){
             if(et.seconds()<1) {
             }else if(et.seconds()<3) {
-                SMiscariRoti.mergiSpreTarget(6.5f, 0);
+//                SMiscariRoti.mergiSpreTarget(6.5f, 0);
             }else{
-                SMiscariRoti.indreaptSpre(0.5, 0, AngleUnit.DEGREES);
-                SMiscariRoti.mergiSpreTarget(6.5f, -2);
+//                SMiscariRoti.indreaptSpre(0.5, 0, AngleUnit.DEGREES);
+//                SMiscariRoti.mergiSpreTarget(6.5f, -2);
             }
         }
 

@@ -8,6 +8,7 @@ import org.firstinspires.ftc.teamcode.therealslimshady.SConnection;
 import org.firstinspires.ftc.teamcode.therealslimshady.SHardware;
 import org.firstinspires.ftc.teamcode.therealslimshady.SMiscariRoti;
 import org.firstinspires.ftc.teamcode.therealslimshady.SVuforia;
+import org.firstinspires.ftc.teamcode.therealslimshady.autonomie.SC2;
 import org.firstinspires.ftc.teamcode.therealslimshady.autonomie.SCreier;
 
 @Autonomous(name = "SAUTONOMIE")
@@ -26,10 +27,11 @@ public class SAUTONOMIE extends LinearOpMode {
         //care este "this", adica clasa asta, intrucat extinde OpMode!!
         SHardware.init(this);
 
-        SCreier.init();
+        SC2.init(this);
         //Initializam si vuforia pentru ca suntem la autonomie si ne ajuta
         SVuforia.init(this);
-
+        telemetry.addData("POTI SA DAI START","DA");
+        telemetry.update();
         //asteptam pana se apasa butonul de start!
         waitForStart();
 
@@ -38,7 +40,7 @@ public class SAUTONOMIE extends LinearOpMode {
             SVuforia.loop(this);
 //            telemetry.addData("dist",SHardware.distanta.getDistance(DistanceUnit.MM));
 
-            SCreier.loop(this);
+            SC2.loop(this);
 //            SCreier.mergi(7650);
             SMiscariRoti.loop(this);
 
@@ -47,7 +49,7 @@ public class SAUTONOMIE extends LinearOpMode {
         }
 
 
-        SCreier.stop();
+        SC2.stop();
         SVuforia.stop();
         SConnection.stop();
         SHardware.initializat = false;

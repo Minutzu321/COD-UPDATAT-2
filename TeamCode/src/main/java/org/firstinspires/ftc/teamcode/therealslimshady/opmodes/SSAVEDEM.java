@@ -2,15 +2,11 @@ package org.firstinspires.ftc.teamcode.therealslimshady.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.therealslimshady.SConnection;
 import org.firstinspires.ftc.teamcode.therealslimshady.SHardware;
 import org.firstinspires.ftc.teamcode.therealslimshady.SMiscariRoti;
 import org.firstinspires.ftc.teamcode.therealslimshady.SVuforia;
-import org.firstinspires.ftc.teamcode.therealslimshady.autonomie.IASAVEDEM;
-import org.firstinspires.ftc.teamcode.therealslimshady.autonomie.SCreier;
 
 @Autonomous(name = "SSAVEDEM")
 public class SSAVEDEM extends LinearOpMode {
@@ -33,23 +29,6 @@ public class SSAVEDEM extends LinearOpMode {
 
         //asteptam pana se apasa butonul de start!
         waitForStart();
-
-
-        SHardware.cutie.setPower(0.4);
-        ElapsedTime et = new ElapsedTime();
-        while (et.seconds() < 0.4) {};
-        SHardware.cutie.setPower(0);
-        while (et.seconds() < 0.2) {};
-        float r=0,g=0,b=0;
-        while (r <= (r+g+b)/3){
-            SHardware.cutie.setPower(-0.15);
-
-            r = SHardware.colorSensor.getNormalizedColors().red;
-            g = SHardware.colorSensor.getNormalizedColors().green;
-            b = SHardware.colorSensor.getNormalizedColors().blue;
-        }
-        SHardware.cutie.setPower(0);
-
         //In loc de functia loop vom avea un while care se opreste cand apasam pe butonul de stop
         while(!isStopRequested()){
 //            SVuforia.loop(this);
@@ -64,7 +43,7 @@ public class SSAVEDEM extends LinearOpMode {
         }
 
 
-        IASAVEDEM.stop();
+//        IASAVEDEM.stop();
         SVuforia.stop();
         SConnection.stop();
         SHardware.initializat = false;

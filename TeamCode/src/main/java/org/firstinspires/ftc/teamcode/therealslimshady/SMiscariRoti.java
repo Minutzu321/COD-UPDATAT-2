@@ -12,6 +12,8 @@ public class SMiscariRoti {
 
     public static float[] puteri = {0,0,0};//respectiv x, y ,r(rotatie)
 
+    public static RiverGauss rg = new RiverGauss(-5,0);
+
     public static void loop(OpMode opMode){
 
         //luam elementele si le punem in variabile
@@ -70,46 +72,87 @@ public class SMiscariRoti {
         puteri[1] = (float) Math.sin(unghi) * putere;
     }
 
-    public static float mergiSpreTarget(float DESIRED_DISTANCE, float DESIRED_STANGA){
-        float targetRange, targetBearing;
+//    public static float mergiSpreTarget(float DESIRED_DISTANCE, float DESIRED_STANGA){
+//        float targetRange, targetBearing;
+//
+//        VectorF trans = SVuforia.targetLocation.getTranslation();
+//
+//        // Extract the X & Y components of the offset of the target relative to the robot
+//        float targetX = trans.get(0) / SVuforia.mmPerInch; // Image X axis
+//        float targetY = trans.get(2) / SVuforia.mmPerInch; // Image Z axis
+//
+//        // target range is based on distance from robot position to origin (right triangle).
+//        targetRange = (float) Math.hypot(targetX, targetY);
+//
+//        // target bearing is based on angle formed between the X axis and the target range line
+//        targetBearing = (float) Math.toDegrees(Math.asin(targetX / targetRange));
+//
+//        float  rangeError   = (targetRange - DESIRED_DISTANCE);
+//        float  headingError = targetBearing - DESIRED_STANGA;
+//
+//        // Use the speed and turn "gains" to calculate how we want the robot to move.
+//        float drive = rangeError * 0.02f;
+//        float turn  = headingError * 0.02f;
+//
+//        setVelXY(turn,drive);
+////        setVelY(drive);
+////        setVelR(turn);
+//
+//        return rangeError;
+//    }
 
-        VectorF trans = SVuforia.targetLocation.getTranslation();
+    public static void mergiLa(double ax, double ay, double x, double y, double cx, double cy){
+        double py;
+        if(ax>cx){
+            py = rg.toMotor(x,cx,ax);
+        }else{
+            py = rg.toMotor(x,ax,cx);
+        }
+        if(x<cx-2){
+            py = -py;
+        }else if(x>cx+2){
+            py = py;
+        }else{
+            py=0;
+        }
 
-        // Extract the X & Y components of the offset of the target relative to the robot
-        float targetX = trans.get(0) / SVuforia.mmPerInch; // Image X axis
-        float targetY = trans.get(2) / SVuforia.mmPerInch; // Image Z axis
+        double px;
+        if(ay>cy){
+            px = rg.toMotor(y,cy,ay);
+        }else{
+            px = rg.toMotor(y,ay,cy);
+        }
+        if(x<cx-2){
+            px = px;
+        }else if(x>cx+2){
+            px = -px;
+        }else{
+            px=0;
+        }
+        setVelXY((float)px,(float)py);
 
-        // target range is based on distance from robot position to origin (right triangle).
-        targetRange = (float) Math.hypot(targetX, targetY);
-
-        // target bearing is based on angle formed between the X axis and the target range line
-        targetBearing = (float) Math.toDegrees(Math.asin(targetX / targetRange));
-
-        float  rangeError   = (targetRange - DESIRED_DISTANCE);
-        float  headingError = targetBearing - DESIRED_STANGA;
-
-        // Use the speed and turn "gains" to calculate how we want the robot to move.
-        float drive = rangeError * 0.02f;
-        float turn  = headingError * 0.02f;
-
-        setVelXY(turn,drive);
-//        setVelY(drive);
-//        setVelR(turn);
-
-        return rangeError;
     }
 
 
     static final double     HEADING_THRESHOLD       = 1 ;      // As tight as we can make it with an integer gyro
     static final double     P_TURN_COEFF            = 0.1;     // Larger is more responsive, but also less stable
 
-    public static boolean indreaptSpre(double speed, double angle, AngleUnit degrees) {
+
+    public static boolean eSpre(double angle){
+        double error = getError(angle, AngleUnit.DEGREES);
+        if (Math.abs(error) <= HEADING_THRESHOLD) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean indreaptaSpre(double speed, double angle, AngleUnit degrees) {
         double   error ;
         double   steer ;
         boolean  onTarget = false ;
         double rotire;
 
-        error = getError(angle);
+        error = getError(angle, degrees);
 
         if (Math.abs(error) <= HEADING_THRESHOLD) {
             steer = 0.0;
@@ -130,9 +173,10 @@ public class SMiscariRoti {
         return onTarget;
     }
 
-    public static double getError(double targetAngle) {
+    public static double getError(double targetAngle, AngleUnit unit) {
         double robotError;
-        robotError = targetAngle - SHardware.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
+        double la = SHardware.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
+        robotError = targetAngle - la;
         while (robotError > 180)  robotError -= 360;
         while (robotError <= -180) robotError += 360;
         return robotError;

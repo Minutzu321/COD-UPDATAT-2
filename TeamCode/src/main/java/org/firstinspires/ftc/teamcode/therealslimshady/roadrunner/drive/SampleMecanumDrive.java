@@ -57,7 +57,7 @@ public class SampleMecanumDrive extends MecanumDrive {
     public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(0, 0, 0);
     public static PIDCoefficients HEADING_PID = new PIDCoefficients(0, 0, 0);
 
-    public static double LATERAL_MULTIPLIER = 1;
+    public static double LATERAL_MULTIPLIER = 1.45631067961165;
 
     public static double VX_WEIGHT = 1;
     public static double VY_WEIGHT = 1;
@@ -93,10 +93,7 @@ public class SampleMecanumDrive extends MecanumDrive {
         }
 
         // TODO: adjust the names of the following hardware devices to match your configuration
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
-        imu.initialize(parameters);
+        imu = SHardware.imu;
 
         // TODO: If the hub containing the IMU you are using is mounted so that the "REV" logo does
         // not face up, remap the IMU axes so that the z-axis points upward (normal to the floor.)
@@ -126,10 +123,10 @@ public class SampleMecanumDrive extends MecanumDrive {
         par.setPosition(SHardware.parJos);
         perp.setPosition(SHardware.perpJos);
 
-        leftFront = hardwareMap.get(DcMotorEx.class, "sf");
-        leftRear = hardwareMap.get(DcMotorEx.class, "ss");
-        rightRear = hardwareMap.get(DcMotorEx.class, "ds");
-        rightFront = hardwareMap.get(DcMotorEx.class, "df");
+        leftFront = (DcMotorEx) SHardware.sf;
+        leftRear = (DcMotorEx) SHardware.ss;
+        rightRear = (DcMotorEx) SHardware.ds;
+        rightFront = (DcMotorEx) SHardware.df;
 
         motors = Arrays.asList(leftFront, leftRear, rightRear, rightFront);
 
@@ -148,8 +145,8 @@ public class SampleMecanumDrive extends MecanumDrive {
         if (RUN_USING_ENCODER && MOTOR_VELO_PID != null) {
             setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, MOTOR_VELO_PID);
         }
-        rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
-        rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
+//        leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
+//        leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
 
         // TODO: if desired, use setLocalizer() to change the localization method
         // for instance, setLocalizer(new ThreeTrackingWheelLocalizer(...));

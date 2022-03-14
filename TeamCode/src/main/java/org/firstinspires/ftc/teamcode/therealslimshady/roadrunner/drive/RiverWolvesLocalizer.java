@@ -34,13 +34,13 @@ import java.util.List;
 public class RiverWolvesLocalizer extends TwoTrackingWheelLocalizer {
     public static double TICKS_PER_REV = 8192;
     public static double WHEEL_RADIUS = 1.8110236; // in
-    public static double GEAR_RATIO = 1; // output (wheel) speed / input (encoder) speed
+    public static double GEAR_RATIO = 1.030927835051546; // output (wheel) speed / input (encoder) speed
 
-    public static double PARALLEL_X = -1.96850394; // X is the up and down direction
-    public static double PARALLEL_Y = -1.57480315; // Y is the strafe direction
+    public static double PARALLEL_X = 1.25984252; // X is the up and down direction
+    public static double PARALLEL_Y = -2.36220472; // Y is the strafe direction
 
-    public static double PERPENDICULAR_X = 1.18110236;
-    public static double PERPENDICULAR_Y = -2.75590551;
+    public static double PERPENDICULAR_X = -1.98818898;
+    public static double PERPENDICULAR_Y = 0.275590551;
 
     public static double MULTI_X = 1;
     public static double MULTI_Y = 1;
@@ -63,7 +63,7 @@ public class RiverWolvesLocalizer extends TwoTrackingWheelLocalizer {
 
         parallelEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "carusel"));
         perpendicularEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "mext"));
-        perpendicularEncoder.setDirection(Encoder.Direction.REVERSE);
+        parallelEncoder.setDirection(Encoder.Direction.REVERSE);
 
         // TODO: reverse any encoders using Encoder.setDirection(Encoder.Direction.REVERSE)
     }

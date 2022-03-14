@@ -6,26 +6,27 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.therealslimshady.SHardware;
 import org.firstinspires.ftc.teamcode.therealslimshady.SMiscariRoti;
 import org.firstinspires.ftc.teamcode.therealslimshady.autonomie.SCreier;
 
 public class SGamepad {
 
-    private static float PUTERE_ROTI = 0.8f;
+    private static float PUTERE_ROTI = 1;
 
     private static float LIMITARE_SUS_LIFT = -8000;
     private static float LIMITARE_JOS_LIFT = 0;
 
-    private static float pozitie_team = 0;
+    private static float pozitie_team = 0, pozitie_cutie = 0;
     public static void init(){
         lift = null;
         SHardware.lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
-
-    private static double putereAnterioara = 0;
-
     private static DcMotor lift = null;
+
+    private static double unghi = 0;
+    private static boolean statusApasat = false, modAnyas = false;
 
     public static void loop(OpMode opMode) {
         if (!SHardware.initializat) return;
@@ -47,19 +48,35 @@ public class SGamepad {
 
         Gamepad gamepad1 = opMode.gamepad1;
         //codul pentru miscare
-        SMiscariRoti.setVelXYR(gamepad1.left_stick_x * PUTERE_ROTI, gamepad1.left_stick_y * PUTERE_ROTI, gamepad1.right_stick_x * PUTERE_ROTI);
+        if(!modAnyas) {
+            SMiscariRoti.setVelXYR(-gamepad1.left_stick_x * PUTERE_ROTI, gamepad1.left_stick_y * PUTERE_ROTI, -gamepad1.right_stick_x * PUTERE_ROTI);
+        }else{
+            SMiscariRoti.setVelXY(-gamepad1.left_stick_x * PUTERE_ROTI, gamepad1.left_stick_y * PUTERE_ROTI);
+            SMiscariRoti.indreaptaSpre(0.3,unghi, AngleUnit.DEGREES);
+        }
 
         //codul pentru maturici
         if (gamepad1.right_trigger > 0.5) {
             SHardware.matura_interior.setPower(1);
-            SHardware.matura_exterior.setPower(-0.4);
+            SHardware.matura_exterior.setPower(0.4);
         } else if (gamepad1.left_trigger > 0.5) {
             SHardware.matura_interior.setPower(-1);
-            SHardware.matura_exterior.setPower(0.4);
+            SHardware.matura_exterior.setPower(-0.4);
         } else {
             SHardware.matura_interior.setPower(0);
             SHardware.matura_exterior.setPower(0);
         }
+
+
+
+        //modu anyas
+        if(gamepad1.x != statusApasat){
+            if(gamepad1.x){
+                modAnyas = !modAnyas;
+            }
+            statusApasat = gamepad1.x;
+        }
+
 
 
         Gamepad gamepad2 = opMode.gamepad2;
@@ -80,19 +97,18 @@ public class SGamepad {
             lift.setPower(0);
         }
 
-        if(putereAnterioara != putere) {
-
-
-            putereAnterioara = putere;
-        }
-
-        opMode.telemetry.addData("putere brat",putere);
-        opMode.telemetry.addData("lift",lift.getCurrentPosition());
-        opMode.telemetry.addData("y",left_stick_y);
 
         //codul pentru cutie
-        CRServo cutie = SHardware.cutie;
-        cutie.setPower(gamepad2.right_stick_x);
+        Servo cutie = SHardware.cutie;
+
+            pozitie_cutie -= gamepad2.right_stick_y * 0.005;
+
+        if(pozitie_cutie > 1)
+            pozitie_cutie = 1f;
+        if(pozitie_cutie < 0)
+            pozitie_cutie = 0;
+        opMode.telemetry.addData("cutie",pozitie_cutie);
+        cutie.setPosition(pozitie_cutie);
 
         Servo team = SHardware.team;
         if(gamepad2.dpad_up) {
@@ -102,17 +118,19 @@ public class SGamepad {
         }
 
         if(pozitie_team > 1)
-            pozitie_team = 1;
-        if(pozitie_team < 0)
-            pozitie_team = 0f;
+            pozitie_team = 1f;
+        if(pozitie_team < 0.1)
+            pozitie_team = 0.1f;
+        opMode.telemetry.addData("team",pozitie_team);
+
 
         team.setPosition(pozitie_team);
 
         //codul pentru carusel
         if(gamepad2.right_trigger > 0.5){
-            SHardware.carusel.setPower(0.6);
-        }else if(gamepad2.left_trigger > 0.5){
             SHardware.carusel.setPower(-0.6);
+        }else if(gamepad2.left_trigger > 0.5){
+            SHardware.carusel.setPower(0.6);
         }else{
             SHardware.carusel.setPower(0);
         }

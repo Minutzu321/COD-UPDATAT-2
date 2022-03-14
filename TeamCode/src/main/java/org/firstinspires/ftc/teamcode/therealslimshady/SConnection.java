@@ -65,12 +65,12 @@ public class SConnection {
                     String rasp = is.readLine();
 //                    Log.e("MESAJ SOCKET", rasp);
 
-                    if(SVuforia.targetVisible){
-                        VectorF translation = SVuforia.targetLocation.getTranslation();
-                        os.write(translation.get(0)+" - "+translation.get(1)+" - "+translation.get(2)+"\n");
-                    }else{
-                        os.write("Tinta nu este vizibila\n");
-                    }
+//                    if(SVuforia.targetVisible){
+//                        VectorF translation = SVuforia.targetLocation.getTranslation();
+//                        os.write(translation.get(0)+" - "+translation.get(1)+" - "+translation.get(2)+"\n");
+//                    }else{
+//                        os.write("Tinta nu este vizibila\n");
+//                    }
                     os.flush();
 
                 }catch (IOException e){
