@@ -51,8 +51,17 @@ public class SGamepad {
         if(!modAnyas) {
             SMiscariRoti.setVelXYR(-gamepad1.left_stick_x * PUTERE_ROTI, gamepad1.left_stick_y * PUTERE_ROTI, -gamepad1.right_stick_x * PUTERE_ROTI);
         }else{
+            if(gamepad1.right_stick_x > 0.5){
+                unghi = 0;
+            }else if(gamepad1.right_stick_x < -0.5){
+                unghi = 180;
+            }else if(-gamepad1.right_stick_y < -0.5){
+                unghi = 90;
+            }else if(-gamepad1.right_stick_y > 0.5){
+                unghi = 270;
+            }
             SMiscariRoti.setVelXY(-gamepad1.left_stick_x * PUTERE_ROTI, gamepad1.left_stick_y * PUTERE_ROTI);
-            SMiscariRoti.indreaptaSpre(0.3,unghi, AngleUnit.DEGREES);
+            SMiscariRoti.indreaptaSpre(0.6,unghi, AngleUnit.DEGREES);
         }
 
         //codul pentru maturici

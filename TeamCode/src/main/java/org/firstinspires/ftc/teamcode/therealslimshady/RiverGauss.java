@@ -11,7 +11,7 @@ public class RiverGauss {
     
     public double toMotor(double i, double a1, double a2) {
     	double limita = getPunctMaxim()-getLimitaPozitiva();
-    	return translateaza(limita, getPunctMaxim(), 0.2, 0.6, getPunctMaxim()-Math.abs(map(i, a1, a2)));
+    	return translateaza(limita, getPunctMaxim(), 0.1, 0.6, getPunctMaxim()-Math.abs(map(i, a1, a2)));
     }
 
     public double map(double nr, double a1, double a2){
