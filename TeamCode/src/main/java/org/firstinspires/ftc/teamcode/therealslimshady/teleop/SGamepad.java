@@ -18,6 +18,19 @@ public class SGamepad {
     private static float LIMITARE_SUS_LIFT = -8000;
     private static float LIMITARE_JOS_LIFT = 0;
 
+    private static Gamepad.RumbleEffect ref = new Gamepad.RumbleEffect.Builder()
+            .addStep(0.8, 0.8, 120)
+            .addStep(0, 0, 50)
+            .addStep(0.8, 0.8, 120)
+            .build(),
+                                        ref2 = new Gamepad.RumbleEffect.Builder()
+            .addStep(0.9, 0.2, 120)
+            .addStep(0.2, 0.9, 120)
+            .addStep(0,0,500)
+            .build();
+
+
+
     private static float pozitie_team = 0, pozitie_cutie = 0;
     public static void init(){
         lift = null;
@@ -81,6 +94,7 @@ public class SGamepad {
         //modu anyas
         if(gamepad1.x != statusApasat){
             if(gamepad1.x){
+                gamepad1.runRumbleEffect(ref);
                 modAnyas = !modAnyas;
             }
             statusApasat = gamepad1.x;
@@ -98,6 +112,14 @@ public class SGamepad {
 //        if(pozitie_lift > LIMITARE_JOS_LIFT-1000 || pozitie_lift < LIMITARE_SUS_LIFT+5000)
 //            putere = 0.1;
 
+        if(!gamepad2.isRumbling()){
+            if (left_stick_y > 0.5f && pozitie_lift <= LIMITARE_SUS_LIFT){
+                gamepad2.runRumbleEffect(ref2);
+            }
+            if (left_stick_y < -0.5f && pozitie_lift >= LIMITARE_JOS_LIFT){
+                gamepad2.runRumbleEffect(ref2);
+            }
+        }
         if (left_stick_y > 0.5f && pozitie_lift > LIMITARE_SUS_LIFT){
             lift.setPower(putere);
         }else if(left_stick_y < -0.5f && pozitie_lift < LIMITARE_JOS_LIFT){
@@ -121,9 +143,9 @@ public class SGamepad {
 
         Servo team = SHardware.team;
         if(gamepad2.dpad_up) {
-            pozitie_team += 0.005;
-        }else if(gamepad2.dpad_down){
             pozitie_team -= 0.005;
+        }else if(gamepad2.dpad_down){
+            pozitie_team += 0.005;
         }
 
         if(pozitie_team > 1)

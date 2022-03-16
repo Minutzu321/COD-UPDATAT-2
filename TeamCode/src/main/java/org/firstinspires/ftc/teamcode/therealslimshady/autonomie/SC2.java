@@ -30,7 +30,7 @@ public class SC2 {
     private static SampleMecanumDrive drive;
     private static double unghi = 0;
 
-    private static double MERGI = 29, MERGI_INAINTE=49;
+    private static double MERGI = 30, MERGI_INAINTE=50;
 
     private static Telemetry telemetry;
 
@@ -98,7 +98,7 @@ public class SC2 {
             }
         }
         if(FAZA==1){
-            SHardware.carusel.setPower(-0.6);
+            SHardware.carusel.setPower(-0.5);
             unghi = 63;
             if (SMiscariRoti.eSpre(unghi) || et.seconds() > 3) {
                 if(et.seconds() > 3.2) {
