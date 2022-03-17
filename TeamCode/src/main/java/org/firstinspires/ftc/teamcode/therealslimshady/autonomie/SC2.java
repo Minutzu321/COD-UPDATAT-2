@@ -30,7 +30,7 @@ public class SC2 {
     private static SampleMecanumDrive drive;
     private static double unghi = 0;
 
-    private static double MERGI = 30, MERGI_INAINTE=50;
+    private static double MERGI = 31, MERGI_INAINTE=50;
 
     private static Telemetry telemetry;
 

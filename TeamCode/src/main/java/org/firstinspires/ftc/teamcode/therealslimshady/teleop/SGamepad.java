@@ -24,9 +24,10 @@ public class SGamepad {
             .addStep(0.8, 0.8, 120)
             .build(),
                                         ref2 = new Gamepad.RumbleEffect.Builder()
-            .addStep(0.9, 0.2, 120)
-            .addStep(0.2, 0.9, 120)
-            .addStep(0,0,500)
+            .addStep(1, 0.2, 450)
+            .addStep(0, 0, 100)
+            .addStep(0.2, 1, 450)
+            .addStep(0,0,600)
             .build();
 
 
@@ -113,10 +114,10 @@ public class SGamepad {
 //            putere = 0.1;
 
         if(!gamepad2.isRumbling()){
-            if (left_stick_y > 0.5f && pozitie_lift <= LIMITARE_SUS_LIFT){
+            if (left_stick_y > 0.5f && pozitie_lift <= LIMITARE_SUS_LIFT+500){
                 gamepad2.runRumbleEffect(ref2);
             }
-            if (left_stick_y < -0.5f && pozitie_lift >= LIMITARE_JOS_LIFT){
+            if (left_stick_y < -0.5f && pozitie_lift >= LIMITARE_JOS_LIFT-500){
                 gamepad2.runRumbleEffect(ref2);
             }
         }
@@ -142,10 +143,10 @@ public class SGamepad {
         cutie.setPosition(pozitie_cutie);
 
         Servo team = SHardware.team;
-        if(gamepad2.dpad_up) {
-            pozitie_team -= 0.005;
-        }else if(gamepad2.dpad_down){
+        if(gamepad2.right_bumper) {
             pozitie_team += 0.005;
+        }else if(gamepad2.left_bumper){
+            pozitie_team -= 0.005;
         }
 
         if(pozitie_team > 1)
