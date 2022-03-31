@@ -32,7 +32,7 @@ public class SHardware {
 
     public static Telemetry telemetry;
 
-    public static double parJos=0.74, perpJos=0.36, parSus=0.335, perpSus=0.64;
+    public static double parJos=0.74, perpJos=0.34, parSus=0.335, perpSus=0.64;
 
     public static void init(OpMode opMode){
         //GIROSCOP

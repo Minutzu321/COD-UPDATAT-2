@@ -22,25 +22,26 @@ import org.firstinspires.ftc.teamcode.therealslimshady.roadrunner.trajectorysequ
 
 import java.util.List;
 
-public class SC2 {
+public class SCFull {
 
-    private static int FAZA = 0;
+    private static int FAZA = 0, OGLINDA = 1;
     private static ElapsedTime et, ett;
     private static int poz = 0;
     private static SampleMecanumDrive drive;
     private static double unghi = 0;
 
-    private static double MERGI = 31, MERGI_INAINTE=50;
+    private static double MERGI = 32, MERGI_INAINTE=50;
 
     private static Telemetry telemetry;
 
-    public static void init(OpMode opMode){
+    public static void init(OpMode opMode, int INVERS){
+        OGLINDA = INVERS;
         unghi=0;
         FAZA=0;
         poz = 0;
         et = null;
         SMiscariRoti.setVelXYR(0,0,0);
-        drive = new SampleMecanumDrive(opMode.hardwareMap);;
+        drive = null;
         SHardware.cutie.setPosition(0);
 
         telemetry = new MultipleTelemetry(opMode.telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -57,6 +58,8 @@ public class SC2 {
             telemetry.addData("YU",drive.getPoseEstimate().getY());
 //            ((DcMotorEx)SHardware.matura_exterior).getVelocity()
 
+        }else{
+            drive = new SampleMecanumDrive(opMode.hardwareMap);
         }
         if(et == null) {
             et = new ElapsedTime();
@@ -66,9 +69,9 @@ public class SC2 {
         SMiscariRoti.indreaptaSpre(0.3,unghi,AngleUnit.DEGREES);
 
         if(poz != 0){
-            int target = 480;
+            int target = 580;
             if(poz == 2)
-                target = 2500;
+                target = 2600;
             if(poz == 3)
                 target = 7650;
 
@@ -83,9 +86,15 @@ public class SC2 {
                 for (Recognition recognition : recognitions) {
                     if (recognition.getLabel().equals(SVuforia.LABELS[0])) {
                         if(getMijloc(recognition)<(recognition.getImageWidth()/2f+50)){
-                            poz = 1;
+                            if(OGLINDA>0)
+                                poz = 1;
+                            else
+                                poz = 2;
                         }else{
-                            poz = 2;
+                            if(OGLINDA>0)
+                                poz = 2;
+                            else
+                                poz = 1;
                         }
                         et.reset();
                         FAZA = 1;
@@ -99,14 +108,16 @@ public class SC2 {
         }
         if(FAZA==1){
             SHardware.carusel.setPower(-0.5);
-            unghi = 63;
+            unghi = 55;
+            if(OGLINDA<0)
+                unghi += 90;
             if (SMiscariRoti.eSpre(unghi) || et.seconds() > 3) {
                 if(et.seconds() > 3.2) {
                     SMiscariRoti.setVelXY(0,0);
                     et.reset();
                     FAZA = 2;
                 }else{
-                    SMiscariRoti.setVelXY(0,0.1f);
+                    SMiscariRoti.setVelXY(0,OGLINDA*0.2f);
                 }
 
             }
@@ -134,8 +145,7 @@ public class SC2 {
             }
         }
         if(FAZA==4) {
-            double x = -drive.getPoseEstimate().getX();
-            double y = -drive.getPoseEstimate().getY();
+            double x = OGLINDA*-1*drive.getPoseEstimate().getX();
 //            SMiscariRoti.mergiLa(0,0,x,y,52,30);
 //            SMiscariRoti.mergiLa(0,0,x,y,40,10);
 //            if((Math.abs(SMiscariRoti.getPuteri()[0]) < 0.1 && Math.abs(SMiscariRoti.getPuteri()[1]) < 0.1) || et.seconds() > 6){
@@ -144,11 +154,11 @@ public class SC2 {
 //            }
             //TODO AICI M-AM OPRIT
             if (x < MERGI_INAINTE-19) {
-                SMiscariRoti.setVelY(-0.4f);
+                SMiscariRoti.setVelY(OGLINDA*-0.4f);
             } else if(x<MERGI_INAINTE-9){
-                SMiscariRoti.setVelY(-0.3f);
+                SMiscariRoti.setVelY(OGLINDA*-0.3f);
             }else{
-                SMiscariRoti.setVelY(-0.15f);
+                SMiscariRoti.setVelY(OGLINDA*-0.15f);
             }
             if (x >= MERGI_INAINTE) {
                 SMiscariRoti.setVelXY(0, 0);
@@ -177,22 +187,22 @@ public class SC2 {
 //        }
 
         if(FAZA==5) {
-            double x = -drive.getPoseEstimate().getX();
+            double x = OGLINDA*-1*drive.getPoseEstimate().getX();
             if(x>MERGI_INAINTE+15){
-                SMiscariRoti.setVelY(0.15f);
+                SMiscariRoti.setVelY(OGLINDA*0.15f);
             }else {
-                double y = -drive.getPoseEstimate().getY();
+                double y = OGLINDA*-1*drive.getPoseEstimate().getY();
                 double target = MERGI;
                 if (poz == 2) {
-                    target = MERGI+2;
+                    target = MERGI+2.3;
                 }
                 if (poz == 3) {
                     target = MERGI+2.5;
                 }
                 if (y < target-20) {
-                    SMiscariRoti.setVelXY(0.2f, 0);
+                    SMiscariRoti.setVelXY(OGLINDA*0.2f, 0);
                 } else if(y < target) {
-                    SMiscariRoti.setVelXY(0.15f,0);
+                    SMiscariRoti.setVelXY(OGLINDA*0.15f,0);
                 }else {
 //                unghi=10;
                     if (SMiscariRoti.eSpre(unghi) || et.seconds() > 2) {
@@ -227,11 +237,15 @@ public class SC2 {
         }
         if(FAZA==7) {
             poz = 0;
-            double y = -drive.getPoseEstimate().getY();
-            unghi = -5;
-            if(y > 1){
+            double y = OGLINDA*-1*drive.getPoseEstimate().getY();
+            unghi = OGLINDA*5;
+            if(y > 1.8){
                 if (SMiscariRoti.eSpre(unghi) || et.seconds() > 2) {
-                    SMiscariRoti.setVelXY(-0.4f, 0);
+                    if(y > 15) {
+                        SMiscariRoti.setVelXY(OGLINDA*-0.4f, 0);
+                    }else{
+                        SMiscariRoti.setVelXY(OGLINDA*-0.2f, 0);
+                    }
                 }
             }else {
                 SMiscariRoti.setVelXY(0, 0);
@@ -241,9 +255,9 @@ public class SC2 {
         }
         if(FAZA==8) {
             poz = 0;
-            unghi = -6;
+            unghi = OGLINDA*-6;
 
-            double x = -drive.getPoseEstimate().getX();
+            double x = OGLINDA*-1*drive.getPoseEstimate().getX();
             if(x > 90){
                 FAZA = 9;
                 et.reset();
@@ -251,16 +265,16 @@ public class SC2 {
                 SHardware.matura_exterior.setPower(-0.6);
                 SHardware.matura_interior.setPower(-0.9);
             }else{
-                SMiscariRoti.setVelXY(0, -0.4f);
+                SMiscariRoti.setVelXY(0, OGLINDA*-0.4f);
             }
         }
 
         if(FAZA==9){
-            double x = -drive.getPoseEstimate().getX();
-            unghi = -3;
+            double x = OGLINDA*-1*drive.getPoseEstimate().getX();
+            unghi = OGLINDA*-3;
             poz = 0;
             if(x < 140){
-                SMiscariRoti.setVelXY(0, -0.4f);
+                SMiscariRoti.setVelXY(0, OGLINDA*-0.4f);
             }else{
                 SMiscariRoti.setVelXY(0, 0);
                 FAZA=10;

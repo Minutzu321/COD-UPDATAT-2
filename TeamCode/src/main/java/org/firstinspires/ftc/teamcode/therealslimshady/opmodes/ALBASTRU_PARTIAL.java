@@ -3,16 +3,14 @@ package org.firstinspires.ftc.teamcode.therealslimshady.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.therealslimshady.SConnection;
 import org.firstinspires.ftc.teamcode.therealslimshady.SHardware;
 import org.firstinspires.ftc.teamcode.therealslimshady.SMiscariRoti;
 import org.firstinspires.ftc.teamcode.therealslimshady.SVuforia;
-import org.firstinspires.ftc.teamcode.therealslimshady.autonomie.SC2;
-import org.firstinspires.ftc.teamcode.therealslimshady.autonomie.SCreier;
+import org.firstinspires.ftc.teamcode.therealslimshady.autonomie.SCPartial;
 
-@Autonomous(name = "SAUTONOMIE")
-public class SAUTONOMIE extends LinearOpMode {
+@Autonomous(name = "ROSU PARTIAL")
+public class ALBASTRU_PARTIAL extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -27,7 +25,7 @@ public class SAUTONOMIE extends LinearOpMode {
         //care este "this", adica clasa asta, intrucat extinde OpMode!!
         SHardware.init(this);
 
-        SC2.init(this);
+        SCPartial.init(this, -1);
         //Initializam si vuforia pentru ca suntem la autonomie si ne ajuta
         SVuforia.init(this);
         telemetry.addData("POTI SA DAI START","DA");
@@ -40,7 +38,7 @@ public class SAUTONOMIE extends LinearOpMode {
             SVuforia.loop(this);
 //            telemetry.addData("dist",SHardware.distanta.getDistance(DistanceUnit.MM));
 
-            SC2.loop(this);
+            SCPartial.loop(this);
 //            SCreier.mergi(7650);
             SMiscariRoti.loop(this);
 
@@ -49,7 +47,7 @@ public class SAUTONOMIE extends LinearOpMode {
         }
 
 
-        SC2.stop();
+        SCPartial.stop();
         SVuforia.stop();
         SConnection.stop();
         SHardware.initializat = false;

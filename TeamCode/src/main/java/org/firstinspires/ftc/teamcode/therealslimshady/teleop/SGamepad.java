@@ -81,10 +81,10 @@ public class SGamepad {
         //codul pentru maturici
         if (gamepad1.right_trigger > 0.5) {
             SHardware.matura_interior.setPower(1);
-            SHardware.matura_exterior.setPower(0.4);
+            SHardware.matura_exterior.setPower(1);
         } else if (gamepad1.left_trigger > 0.5) {
             SHardware.matura_interior.setPower(-1);
-            SHardware.matura_exterior.setPower(-0.4);
+            SHardware.matura_exterior.setPower(-1);
         } else {
             SHardware.matura_interior.setPower(0);
             SHardware.matura_exterior.setPower(0);
@@ -137,8 +137,8 @@ public class SGamepad {
 
         if(pozitie_cutie > 1)
             pozitie_cutie = 1f;
-        if(pozitie_cutie < 0)
-            pozitie_cutie = 0;
+        if(pozitie_cutie < 0.23)
+            pozitie_cutie = 0.23f;
         opMode.telemetry.addData("cutie",pozitie_cutie);
         cutie.setPosition(pozitie_cutie);
 
