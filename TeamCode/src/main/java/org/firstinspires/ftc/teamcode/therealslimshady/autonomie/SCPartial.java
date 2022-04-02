@@ -18,7 +18,7 @@ import java.util.List;
 
 public class SCPartial {
 
-    private static int FAZA = 0, OGLINDA = 1;
+    private static int FAZA = 0;
     private static ElapsedTime et, ett;
     private static int poz = 0;
     private static SampleMecanumDrive drive;
@@ -28,8 +28,9 @@ public class SCPartial {
 
     private static Telemetry telemetry;
 
-    public static void init(OpMode opMode,int INVERS){
-        OGLINDA = INVERS;
+    public static void init(OpMode opMode){
+        MERGI_INAPOI = Configuratie.MERGI_INAPOI;
+        MERGI = Configuratie.MERGI;
         unghi=0;
         FAZA=0;
         poz = 0;
@@ -63,11 +64,11 @@ public class SCPartial {
         SMiscariRoti.indreaptaSpre(0.3,unghi,AngleUnit.DEGREES);
 
         if(poz != 0){
-            int target = 580;
+            int target = Configuratie.LIFT_1;
             if(poz == 2)
-                target = 2600;
+                target = Configuratie.LIFT_2;
             if(poz == 3)
-                target = 7650;
+                target = Configuratie.LIFT_3;
 
             mergi(target);
         }else{
@@ -75,34 +76,34 @@ public class SCPartial {
         }
 
         if(FAZA == 0){
-            if(et.seconds() < 5) {
+            if(et.seconds() < Configuratie.ASTEAPTA_RECUNOASTERE) {
                 List<Recognition> recognitions = SVuforia.tfod.getRecognitions();
                 for (Recognition recognition : recognitions) {
                     if (recognition.getLabel().equals(SVuforia.LABELS[0])) {
                         if(getMijloc(recognition)<(recognition.getImageWidth()/2f+50)){
-                            poz = 1;
+                            poz = Configuratie.POZ_STANGA;
                         }else{
-                            poz = 2;
+                            poz = Configuratie.POZ_DREAPTA;
                         }
                         et.reset();
                         FAZA = 1;
                     }
                 }
             }else{
-                poz = 3;
+                poz = Configuratie.POZ_NEVAZUTA;
                 et.reset();
                 FAZA = 1;
             }
         }
 
         if(FAZA==1) {
-            double x = drive.getPoseEstimate().getX();
+            double x = Configuratie.DIRECTIE*drive.getPoseEstimate().getX();
             if (x < MERGI_INAPOI-19) {
-                SMiscariRoti.setVelY(0.4f);
+                SMiscariRoti.setVelY(Configuratie.DIRECTIE*0.4f);
             } else if(x<MERGI_INAPOI-9){
-                SMiscariRoti.setVelY(0.3f);
+                SMiscariRoti.setVelY(Configuratie.DIRECTIE*0.3f);
             }else{
-                SMiscariRoti.setVelY(0.15f);
+                SMiscariRoti.setVelY(Configuratie.DIRECTIE*0.15f);
             }
             if (x >= MERGI_INAPOI) {
                 SMiscariRoti.setVelXY(0, 0);
@@ -131,22 +132,22 @@ public class SCPartial {
 //        }
 
         if(FAZA==2) {
-            double x = drive.getPoseEstimate().getX();
+            double x = Configuratie.DIRECTIE*drive.getPoseEstimate().getX();
             if(x>MERGI_INAPOI+15){
-                SMiscariRoti.setVelY(-0.15f);
+                SMiscariRoti.setVelY(Configuratie.DIRECTIE*-0.15f);
             }else {
-                double y = OGLINDA*-1*drive.getPoseEstimate().getY();
+                double y = -1*drive.getPoseEstimate().getY();
                 double target = MERGI;
                 if (poz == 2) {
-                    target = MERGI+2.3;
+                    target = MERGI+Configuratie.MERGI_ADD_2;
                 }
                 if (poz == 3) {
-                    target = MERGI+2.5;
+                    target = MERGI+Configuratie.MERGI_ADD_3;
                 }
                 if (y < target-20) {
-                    SMiscariRoti.setVelXY(OGLINDA*0.2f, 0);
+                    SMiscariRoti.setVelXY(0.2f, 0);
                 } else if(y < target) {
-                    SMiscariRoti.setVelXY(OGLINDA*0.15f,0);
+                    SMiscariRoti.setVelXY(0.15f,0);
                 }else {
 //                unghi=10;
                     if (SMiscariRoti.eSpre(unghi) || et.seconds() > 2) {
@@ -181,14 +182,14 @@ public class SCPartial {
         }
         if(FAZA==4) {
             poz = 0;
-            double y = OGLINDA*-drive.getPoseEstimate().getY();
+            double y = -drive.getPoseEstimate().getY();
             unghi = 5;
             if(y > 2.7){
                 if (SMiscariRoti.eSpre(unghi) || et.seconds() > 2) {
                     if(y > 15) {
-                        SMiscariRoti.setVelXY(OGLINDA*-1*0.4f, 0);
+                        SMiscariRoti.setVelXY(-1*0.4f, 0);
                     }else{
-                        SMiscariRoti.setVelXY(OGLINDA*-1*0.2, 0);
+                        SMiscariRoti.setVelXY(-1*0.2, 0);
                     }
                 }
             }else {
@@ -199,26 +200,38 @@ public class SCPartial {
         }
         if(FAZA==5) {
             poz = 0;
-            unghi = -6;
+            unghi = Configuratie.DIRECTIE*-Configuratie.UNGHI_ANTI_TEVI;
 
-            double x = -drive.getPoseEstimate().getX();
-            if(x > 50){
-                FAZA = 6;
-                et.reset();
-                SMiscariRoti.setVelXY(0, 0);
-                SHardware.matura_exterior.setPower(-0.6);
-                SHardware.matura_interior.setPower(-0.9);
+            double x = Configuratie.DIRECTIE-drive.getPoseEstimate().getX();
+            if(Configuratie.DIRECTIE<0) {
+                if (x > 20) {
+                    FAZA = 6;
+                    et.reset();
+                    SMiscariRoti.setVelXY(0, 0);
+                    SHardware.matura_exterior.setPower(-0.6);
+                    SHardware.matura_interior.setPower(-0.9);
+                } else {
+                    SMiscariRoti.setVelXY(0, Configuratie.DIRECTIE * -0.4f);
+                }
             }else{
-                SMiscariRoti.setVelXY(0, -0.4f);
+                if (x > 50) {
+                    FAZA = 6;
+                    et.reset();
+                    SMiscariRoti.setVelXY(0, 0);
+                    SHardware.matura_exterior.setPower(-0.6);
+                    SHardware.matura_interior.setPower(-0.9);
+                } else {
+                    SMiscariRoti.setVelXY(0, Configuratie.DIRECTIE * -0.4f);
+                }
             }
         }
 
         if(FAZA==6){
-            double x = -drive.getPoseEstimate().getX();
-            unghi = -3;
+            double x = Configuratie.DIRECTIE*-drive.getPoseEstimate().getX();
+            unghi = Configuratie.DIRECTIE*-3;
             poz = 0;
-            if(x < 80){
-                SMiscariRoti.setVelXY(0, -0.4f);
+            if(x < Configuratie.MERGI_WH_PARTIAL){
+                SMiscariRoti.setVelXY(0, Configuratie.DIRECTIE*-0.4f);
             }else{
                 SMiscariRoti.setVelXY(0, 0);
                 FAZA=7;

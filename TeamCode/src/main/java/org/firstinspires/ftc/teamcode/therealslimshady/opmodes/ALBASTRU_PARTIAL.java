@@ -7,13 +7,15 @@ import org.firstinspires.ftc.teamcode.therealslimshady.SConnection;
 import org.firstinspires.ftc.teamcode.therealslimshady.SHardware;
 import org.firstinspires.ftc.teamcode.therealslimshady.SMiscariRoti;
 import org.firstinspires.ftc.teamcode.therealslimshady.SVuforia;
+import org.firstinspires.ftc.teamcode.therealslimshady.autonomie.Configuratie;
 import org.firstinspires.ftc.teamcode.therealslimshady.autonomie.SCPartial;
 
-@Autonomous(name = "ROSU PARTIAL")
+@Autonomous(name = "ALBASTRU PARTIAL")
 public class ALBASTRU_PARTIAL extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
+        Configuratie.init(1);
 
         //OPTIONAL Initializam inainte serverul pentru conexiunea externa cu laptopul
         //daca aplicatia se inchide in timpul testului neasteptat, stergeti linia SConnection.init();
@@ -25,7 +27,7 @@ public class ALBASTRU_PARTIAL extends LinearOpMode {
         //care este "this", adica clasa asta, intrucat extinde OpMode!!
         SHardware.init(this);
 
-        SCPartial.init(this, -1);
+        SCPartial.init(this);
         //Initializam si vuforia pentru ca suntem la autonomie si ne ajuta
         SVuforia.init(this);
         telemetry.addData("POTI SA DAI START","DA");

@@ -7,6 +7,7 @@ import org.firstinspires.ftc.teamcode.therealslimshady.SConnection;
 import org.firstinspires.ftc.teamcode.therealslimshady.SHardware;
 import org.firstinspires.ftc.teamcode.therealslimshady.SMiscariRoti;
 import org.firstinspires.ftc.teamcode.therealslimshady.SVuforia;
+import org.firstinspires.ftc.teamcode.therealslimshady.autonomie.Configuratie;
 import org.firstinspires.ftc.teamcode.therealslimshady.autonomie.SCFull;
 
 @Autonomous(name = "ROSU FULL")
@@ -14,6 +15,7 @@ public class ROSU_FULL extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
+        Configuratie.init(0);
 
         //OPTIONAL Initializam inainte serverul pentru conexiunea externa cu laptopul
         //daca aplicatia se inchide in timpul testului neasteptat, stergeti linia SConnection.init();

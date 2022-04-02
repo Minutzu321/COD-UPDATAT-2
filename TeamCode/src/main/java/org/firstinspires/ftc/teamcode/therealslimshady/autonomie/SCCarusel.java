@@ -2,13 +2,8 @@ package org.firstinspires.ftc.teamcode.therealslimshady.autonomie;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
-import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
-import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -18,11 +13,10 @@ import org.firstinspires.ftc.teamcode.therealslimshady.SHardware;
 import org.firstinspires.ftc.teamcode.therealslimshady.SMiscariRoti;
 import org.firstinspires.ftc.teamcode.therealslimshady.SVuforia;
 import org.firstinspires.ftc.teamcode.therealslimshady.roadrunner.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.therealslimshady.roadrunner.trajectorysequence.TrajectorySequence;
 
 import java.util.List;
 
-public class SCFull {
+public class SCCarusel {
 
     private static int FAZA = 0;
     private static ElapsedTime et, ett;
@@ -34,7 +28,7 @@ public class SCFull {
 
     private static Telemetry telemetry;
 
-    public static void init(OpMode opMode, int INVERS){
+    public static void init(OpMode opMode){
         MERGI_INAINTE = Configuratie.MERGI_INAINTE;
         MERGI = Configuratie.MERGI;
         unghi=0;
@@ -104,7 +98,7 @@ public class SCFull {
         }
         if(FAZA==1){
             SHardware.carusel.setPower(Configuratie.PUTERE_CARUSEL);
-            unghi = Configuratie.UNGHI_CARUSEL;
+            unghi = Configuratie.DIRECTIE*Configuratie.UNGHI_CARUSEL;
             if (SMiscariRoti.eSpre(unghi) || et.seconds() > Configuratie.TIMP_ROTIRE_CARUSEL) {
                 if(et.seconds() > Configuratie.TIMP_ROTIRE_CARUSEL+0.5) {
                     SMiscariRoti.setVelXY(0,0);
@@ -120,7 +114,8 @@ public class SCFull {
         if(FAZA==2){
             SMiscariRoti.setVelXY(0,0);
             if(et.seconds() > 1){
-                unghi = 0;
+
+                unghi = 90;
                 if(SMiscariRoti.eSpre(unghi) || et.seconds() > 3.5) {
                     FAZA = 3;
                     et.reset();
@@ -136,98 +131,91 @@ public class SCFull {
                 FAZA = 4;
             }
         }
-        if(FAZA==4) {
-            double x = Configuratie.DIRECTIE-1*drive.getPoseEstimate().getX();
 
-            if (x < MERGI_INAINTE-19) {
+        if(FAZA==4){
+            double x = Configuratie.DIRECTIE-1*drive.getPoseEstimate().getY();
+
+            if (x < Configuratie.MERGI_BACKUP-19) {
                 SMiscariRoti.setVelY(Configuratie.DIRECTIE*-0.4f);
-            } else if(x<MERGI_INAINTE-9){
+            } else if(x<Configuratie.MERGI_BACKUP-9){
                 SMiscariRoti.setVelY(Configuratie.DIRECTIE*-0.3f);
             }else{
                 SMiscariRoti.setVelY(Configuratie.DIRECTIE*-0.15f);
             }
-            if (x >= MERGI_INAINTE) {
+            if (x >= Configuratie.MERGI_BACKUP) {
                 SMiscariRoti.setVelXY(0, 0);
+                et.reset();
                 FAZA = 5;
             }
         }
-//        if(FAZA==200) {
-//            double x = -drive.getPoseEstimate().getX();
-//            double y = -drive.getPoseEstimate().getY();
-////            SMiscariRoti.mergiLa(52,30,x,y,0,-24);
-//            SMiscariRoti.mergiLa(0,30,x,y,0,0);
-//            if(et.seconds()>5){
-//                et.reset();
-//                FAZA=4;
-//            }
-            //TODO AICI M-AM OPRIT
-//            if (x < 25) {
-//                SMiscariRoti.setVelY(-0.6f);
-//            } else {
-//                SMiscariRoti.setVelY(-0.2f);
-//            }
-//            if (x > 52) {
-//                SMiscariRoti.setVelXYR(0, 0, 0);
-//                FAZA = 5;
-//            }
-//        }
 
-        if(FAZA==5) {
-            double x = Configuratie.DIRECTIE-1*drive.getPoseEstimate().getX();
-            if(x>MERGI_INAINTE+15){
-                SMiscariRoti.setVelY(Configuratie.DIRECTIE*0.15f);
-            }else {
-                double y = -1*drive.getPoseEstimate().getY();
-                double target = MERGI;
-                if (poz == 2) {
-                    target = MERGI+Configuratie.MERGI_ADD_2;
-                }
-                if (poz == 3) {
-                    target = MERGI+Configuratie.MERGI_ADD_3;
-                }
-                if (y < target-20) {
-                    SMiscariRoti.setVelXY(0.2f, 0);
-                } else if(y < target) {
-                    SMiscariRoti.setVelXY(0.15f,0);
-                }else {
-//                unghi=10;
-                    if (SMiscariRoti.eSpre(unghi) || et.seconds() > 2) {
-                        SMiscariRoti.setVelXY(0, 0);
-                        SHardware.cutie.setPosition(0.9);
-                        et.reset();
-                        FAZA = 6;
-                    }
-                }
+        if(FAZA==5){
+            unghi = -90;
+            if(et.seconds() > 4 || SMiscariRoti.eSpre(unghi)){
+                SMiscariRoti.setVelXY(0, 0);
+                FAZA = 6;
             }
-
-
-//            double x = -drive.getPoseEstimate().getX();
-//            double y = -drive.getPoseEstimate().getY();
-//            SMiscariRoti.mergiLa(30,27,x,y,90,0);
-//            if((Math.abs(SMiscariRoti.getPuteri()[0]) < 0.1 && Math.abs(SMiscariRoti.getPuteri()[1]) < 0.1) || et.seconds() > 6){
-//                et.reset();
-//
-//            }
-
         }
 
-        if(FAZA==6) {
-            if(et.seconds() > 2) {
-
-                SHardware.cutie.setPosition(0);
-                if(et.seconds() > 3) {
+        if(FAZA==6){
+            double x = -1*drive.getPoseEstimate().getX();
+            double target = MERGI;
+            if (poz == 2) {
+                target = MERGI+Configuratie.MERGI_ADD_2;
+            }
+            if (poz == 3) {
+                target = MERGI+Configuratie.MERGI_ADD_3;
+            }
+            if (x < target-20) {
+                SMiscariRoti.setVelXY(0.3f, 0);
+            } else if(x < target) {
+                SMiscariRoti.setVelXY(0.15f,0);
+            }else {
+//                unghi=10;
+                if (SMiscariRoti.eSpre(unghi) || et.seconds() > 2) {
+                    SMiscariRoti.setVelXY(0, 0);
+                    SHardware.cutie.setPosition(0.9);
                     et.reset();
                     FAZA = 7;
                 }
             }
+
         }
-        if(FAZA==7) {
+
+        if(FAZA==7){
+            if(et.seconds() > 2) {
+                SHardware.cutie.setPosition(0);
+                if (et.seconds() > 3) {
+                    et.reset();
+                    FAZA = 8;
+                }
+            }
+        }
+
+//        if(FAZA==8){
+//            poz = 0;
+//            double y = -drive.getPoseEstimate().getY();
+//            if(y < Configuratie.NU_LOVI_TSE){
+//                if (SMiscariRoti.eSpre(unghi) || et.seconds() > 2) {
+//                    if(y > 15) {
+//                        SMiscariRoti.setVelY(0.4f);
+//                    }else{
+//                        SMiscariRoti.setVelY(0.2f);
+//                    }
+//                }
+//            }else {
+//                SMiscariRoti.setVelXY(0, 0);
+//                et.reset();
+//                FAZA = 9;
+//            }
+//        }
+
+        if(FAZA==8){
             poz = 0;
-            double y = -1*drive.getPoseEstimate().getY();
-            unghi = Configuratie.DIRECTIE*5;
-            if(y > Configuratie.DISTANTA_PERETE_FULL){
+            double x = -drive.getPoseEstimate().getX();
+            if(x > -13){
                 if (SMiscariRoti.eSpre(unghi) || et.seconds() > 2) {
-                    if(y > 15) {
+                    if(x > 0) {
                         SMiscariRoti.setVelXY(-0.4f, 0);
                     }else{
                         SMiscariRoti.setVelXY(-0.2f, 0);
@@ -236,52 +224,29 @@ public class SCFull {
             }else {
                 SMiscariRoti.setVelXY(0, 0);
                 et.reset();
-                FAZA = 8;
-            }
-        }
-        if(FAZA==8) {
-            poz = 0;
-            unghi = Configuratie.DIRECTIE*-6;
-
-            double x = Configuratie.DIRECTIE*-1*drive.getPoseEstimate().getX();
-            if(x > Configuratie.D1_FULL){
                 FAZA = 9;
-                et.reset();
-                SMiscariRoti.setVelXY(0, 0);
-                if(Configuratie.DIRECTIE < 1) {
-                    SHardware.matura_exterior.setPower(-0.6);
-                    SHardware.matura_interior.setPower(-0.9);
-                }
-            }else{
-                SMiscariRoti.setVelXY(0, Configuratie.DIRECTIE*-0.4f);
             }
         }
 
         if(FAZA==9){
-            double x = Configuratie.DIRECTIE*-1*drive.getPoseEstimate().getX();
-            unghi = Configuratie.DIRECTIE*-3;
-            poz = 0;
-            if(x < Configuratie.D2_FULL){
-                SMiscariRoti.setVelXY(0, Configuratie.DIRECTIE*-0.4f);
-            }else{
+            double y = -drive.getPoseEstimate().getY();
+            if(y > 50){
+                if (SMiscariRoti.eSpre(unghi) || et.seconds() > 2) {
+                    if(y > 60) {
+                        SMiscariRoti.setVelY(-0.4f);
+                    }else{
+                        SMiscariRoti.setVelY(-0.2f);
+                    }
+                }
+            }else {
                 SMiscariRoti.setVelXY(0, 0);
-                FAZA=10;
+                et.reset();
+                FAZA = 10;
             }
         }
 
-        if(FAZA==10){
-            SHardware.cutie.setPosition(0.252);
-        }
-        if(ett.seconds() > 29){
-            SHardware.matura_exterior.setPower(0);
-            SHardware.matura_interior.setPower(0);
-        }
-//        if(FAZA == 14){
-//            if(et.seconds() < 2)
-//                SMiscariRoti.setVelXYR(0.2f, 0, 0);
-//            else
-//                SMiscariRoti.setVelXY(0,0);
-//        }
+
+
     }
 
     private static float getMijloc(Recognition recognition){
