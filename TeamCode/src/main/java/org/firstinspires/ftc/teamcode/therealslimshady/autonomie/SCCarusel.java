@@ -211,7 +211,6 @@ public class SCCarusel {
 //        }
 
         if(FAZA==8){
-            poz = 0;
             double x = -drive.getPoseEstimate().getX();
             if(x > -13){
                 if (SMiscariRoti.eSpre(unghi) || et.seconds() > 2) {
@@ -229,6 +228,7 @@ public class SCCarusel {
         }
 
         if(FAZA==9){
+            poz = 0;
             double y = -drive.getPoseEstimate().getY();
             if(y > 50){
                 if (SMiscariRoti.eSpre(unghi) || et.seconds() > 2) {
