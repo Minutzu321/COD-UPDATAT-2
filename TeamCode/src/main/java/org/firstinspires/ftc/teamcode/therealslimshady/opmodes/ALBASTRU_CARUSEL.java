@@ -8,9 +8,9 @@ import org.firstinspires.ftc.teamcode.therealslimshady.SHardware;
 import org.firstinspires.ftc.teamcode.therealslimshady.SMiscariRoti;
 import org.firstinspires.ftc.teamcode.therealslimshady.SVuforia;
 import org.firstinspires.ftc.teamcode.therealslimshady.autonomie.Configuratie;
-import org.firstinspires.ftc.teamcode.therealslimshady.autonomie.SCUrgenta;
+import org.firstinspires.ftc.teamcode.therealslimshady.autonomie.SCCarusel;
 
-@Autonomous(name = "ALBASTRU CARUSEL")
+@Autonomous(name = "ALBASRU CARUSEL")
 public class ALBASTRU_CARUSEL extends LinearOpMode {
 
     @Override
@@ -27,7 +27,7 @@ public class ALBASTRU_CARUSEL extends LinearOpMode {
         //care este "this", adica clasa asta, intrucat extinde OpMode!!
         SHardware.init(this);
 
-        SCUrgenta.init(this);
+        SCCarusel.init(this);
         //Initializam si vuforia pentru ca suntem la autonomie si ne ajuta
         SVuforia.init(this);
         telemetry.addData("POTI SA DAI START","DA");
@@ -40,7 +40,7 @@ public class ALBASTRU_CARUSEL extends LinearOpMode {
             SVuforia.loop(this);
 //            telemetry.addData("dist",SHardware.distanta.getDistance(DistanceUnit.MM));
 
-            SCUrgenta.loop(this);
+            SCCarusel.loop(this);
 //            SCreier.mergi(7650);
             SMiscariRoti.loop(this);
 
@@ -49,7 +49,7 @@ public class ALBASTRU_CARUSEL extends LinearOpMode {
         }
 
 
-        SCUrgenta.stop();
+        SCCarusel.stop();
         SVuforia.stop();
         SConnection.stop();
         SHardware.initializat = false;

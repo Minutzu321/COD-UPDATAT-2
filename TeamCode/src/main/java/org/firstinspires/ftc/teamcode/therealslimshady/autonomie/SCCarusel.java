@@ -87,17 +87,34 @@ public class SCCarusel {
                             poz = Configuratie.POZ_DREAPTA;
                         }
                         et.reset();
-                        FAZA = 1;
+                        FAZA = (int) (Configuratie.DIRECTIE*1);
                     }
                 }
             }else{
                 poz = Configuratie.POZ_NEVAZUTA;
                 et.reset();
+                FAZA = (int) (Configuratie.DIRECTIE*1);
+            }
+        }
+
+        if(FAZA==-1){
+            double x = -drive.getPoseEstimate().getX();
+
+            if (x < 20) {
+                if(x<10)
+                    SMiscariRoti.setVelXY(0, -0.4);
+                else
+                    SMiscariRoti.setVelXY(0,-0.2);
+            }
+            if (x >= 20) {
+                SMiscariRoti.setVelXY(0, 0);
+                et.reset();
                 FAZA = 1;
             }
         }
+
         if(FAZA==1){
-            SHardware.carusel.setPower(Configuratie.PUTERE_CARUSEL);
+            SHardware.carusel.setPower(Configuratie.DIRECTIE*Configuratie.PUTERE_CARUSEL);
             unghi = Configuratie.DIRECTIE*Configuratie.UNGHI_CARUSEL;
             if (SMiscariRoti.eSpre(unghi) || et.seconds() > Configuratie.TIMP_ROTIRE_CARUSEL) {
                 if(et.seconds() > Configuratie.TIMP_ROTIRE_CARUSEL+0.5) {
@@ -115,7 +132,7 @@ public class SCCarusel {
             SMiscariRoti.setVelXY(0,0);
             if(et.seconds() > 1){
 
-                unghi = 90;
+                unghi = Configuratie.DIRECTIE*90;
                 if(SMiscariRoti.eSpre(unghi) || et.seconds() > 3.5) {
                     FAZA = 3;
                     et.reset();
@@ -133,7 +150,7 @@ public class SCCarusel {
         }
 
         if(FAZA==4){
-            double x = Configuratie.DIRECTIE-1*drive.getPoseEstimate().getY();
+            double x = -1*drive.getPoseEstimate().getY();
 
             if (x < Configuratie.MERGI_BACKUP-19) {
                 SMiscariRoti.setVelY(Configuratie.DIRECTIE*-0.4f);
@@ -230,9 +247,9 @@ public class SCCarusel {
         if(FAZA==9){
             poz = 0;
             double y = -drive.getPoseEstimate().getY();
-            if(y > 50){
+            if(y > 58){
                 if (SMiscariRoti.eSpre(unghi) || et.seconds() > 2) {
-                    if(y > 60) {
+                    if(y > 70) {
                         SMiscariRoti.setVelY(-0.4f);
                     }else{
                         SMiscariRoti.setVelY(-0.2f);

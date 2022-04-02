@@ -67,13 +67,20 @@ public class SCUrgenta {
         if(FAZA==0) {
             double x = -drive.getPoseEstimate().getX();
 
-            if (x < 40) {
-                SMiscariRoti.setVelXY(-0.4, 0);
+            if (x < 20) {
+                if(x<10)
+                    SMiscariRoti.setVelXY(0, -0.4);
+                else
+                    SMiscariRoti.setVelXY(0,-0.2);
             }
-            if (x >= MERGI_INAINTE) {
+            if (x >= 20) {
                 SMiscariRoti.setVelXY(0, 0);
                 FAZA = 1;
             }
+        }
+
+        if(FAZA==1){
+
         }
     }
 

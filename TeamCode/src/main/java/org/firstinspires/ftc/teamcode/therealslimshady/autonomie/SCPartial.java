@@ -208,8 +208,8 @@ public class SCPartial {
                     FAZA = 6;
                     et.reset();
                     SMiscariRoti.setVelXY(0, 0);
-                    SHardware.matura_exterior.setPower(-0.6);
-                    SHardware.matura_interior.setPower(-0.9);
+//                    SHardware.matura_exterior.setPower(-0.6);
+//                    SHardware.matura_interior.setPower(-0.9);
                 } else {
                     SMiscariRoti.setVelXY(0, Configuratie.DIRECTIE * -0.4f);
                 }
@@ -218,8 +218,6 @@ public class SCPartial {
                     FAZA = 6;
                     et.reset();
                     SMiscariRoti.setVelXY(0, 0);
-                    SHardware.matura_exterior.setPower(-0.6);
-                    SHardware.matura_interior.setPower(-0.9);
                 } else {
                     SMiscariRoti.setVelXY(0, Configuratie.DIRECTIE * -0.4f);
                 }
