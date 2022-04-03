@@ -25,7 +25,7 @@ public class Configuratie {
     public static double PUTERE_SPRE_CARUSEL;
 
     //timpul rotirii caruselului
-    public static double TIMP_ROTIRE_CARUSEL = 3;
+    public static double TIMP_ROTIRE_CARUSEL = 4;
 
     //directia in care sa mearga robotul
     public static double DIRECTIE;
@@ -88,11 +88,11 @@ public class Configuratie {
             POZ_DREAPTA = 3;
             POZ_NEVAZUTA = 1;
 
-            PUTERE_CARUSEL = -0.5;
+            PUTERE_CARUSEL = -0.36;
 
-            UNGHI_CARUSEL = 55+90;
+            UNGHI_CARUSEL = 65+90;
 
-            PUTERE_SPRE_CARUSEL = 0.1;
+            PUTERE_SPRE_CARUSEL = 0.02;
 
             DIRECTIE = -1;
 
@@ -106,7 +106,7 @@ public class Configuratie {
 
             MERGI_WH_PARTIAL = 40;
 
-            MERGI_BACKUP = 80;
+            MERGI_BACKUP = 65;
 
             MERGI = 33;
 

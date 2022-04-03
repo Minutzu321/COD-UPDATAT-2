@@ -71,7 +71,7 @@ public class SCCarusel {
             if(poz == 3)
                 target = Configuratie.LIFT_3;
 
-            mergi(target);
+            mergi(3);
         }else{
             mergi(poz);
         }
@@ -100,8 +100,8 @@ public class SCCarusel {
         if(FAZA==-1){
             double x = -drive.getPoseEstimate().getX();
 
-            if (x < 20) {
-                if(x<10)
+            if (x < 10) {
+                if(x<3)
                     SMiscariRoti.setVelXY(0, -0.4);
                 else
                     SMiscariRoti.setVelXY(0,-0.2);
@@ -117,7 +117,7 @@ public class SCCarusel {
             SHardware.carusel.setPower(Configuratie.DIRECTIE*Configuratie.PUTERE_CARUSEL);
             unghi = Configuratie.DIRECTIE*Configuratie.UNGHI_CARUSEL;
             if (SMiscariRoti.eSpre(unghi) || et.seconds() > Configuratie.TIMP_ROTIRE_CARUSEL) {
-                if(et.seconds() > Configuratie.TIMP_ROTIRE_CARUSEL+0.5) {
+                if(et.seconds() > Configuratie.TIMP_ROTIRE_CARUSEL+2) {
                     SMiscariRoti.setVelXY(0,0);
                     et.reset();
                     FAZA = 2;
@@ -161,13 +161,21 @@ public class SCCarusel {
             }
             if (x >= Configuratie.MERGI_BACKUP) {
                 SMiscariRoti.setVelXY(0, 0);
+                FAZA = -5;
                 et.reset();
-                FAZA = 5;
+            }
+        }
+
+        if(FAZA==-5){
+            if(et.seconds()<1) {
+                SMiscariRoti.setVelX(0.4);
+            }else{
+                SMiscariRoti.setVelXY(0,0);
             }
         }
 
         if(FAZA==5){
-            unghi = -90;
+            unghi = Configuratie.DIRECTIE*-90;
             if(et.seconds() > 4 || SMiscariRoti.eSpre(unghi)){
                 SMiscariRoti.setVelXY(0, 0);
                 FAZA = 6;
@@ -175,18 +183,18 @@ public class SCCarusel {
         }
 
         if(FAZA==6){
-            double x = -1*drive.getPoseEstimate().getX();
-            double target = MERGI;
+            double x = drive.getPoseEstimate().getX();
+            double target = 3;
             if (poz == 2) {
-                target = MERGI+Configuratie.MERGI_ADD_2;
+                target += Configuratie.MERGI_ADD_2;
             }
             if (poz == 3) {
-                target = MERGI+Configuratie.MERGI_ADD_3;
+                target += Configuratie.MERGI_ADD_3;
             }
             if (x < target-20) {
-                SMiscariRoti.setVelXY(0.3f, 0);
+                SMiscariRoti.setVelXY(0.3f, 0.1);
             } else if(x < target) {
-                SMiscariRoti.setVelXY(0.15f,0);
+                SMiscariRoti.setVelXY(0.15f,0.1);
             }else {
 //                unghi=10;
                 if (SMiscariRoti.eSpre(unghi) || et.seconds() > 2) {
@@ -229,9 +237,9 @@ public class SCCarusel {
 
         if(FAZA==8){
             double x = -drive.getPoseEstimate().getX();
-            if(x > -13){
+            if(x > 30){
                 if (SMiscariRoti.eSpre(unghi) || et.seconds() > 2) {
-                    if(x > 0) {
+                    if(x > 20) {
                         SMiscariRoti.setVelXY(-0.4f, 0);
                     }else{
                         SMiscariRoti.setVelXY(-0.2f, 0);
